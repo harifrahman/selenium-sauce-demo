@@ -1,0 +1,5 @@
+venv-selenium
+notes.md
+__pycache__
+.pytest_cache
+.env
