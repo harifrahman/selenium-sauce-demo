@@ -1,6 +1,11 @@
 import pytest
 from selenium import webdriver
 from selenium.webdriver import ChromeOptions
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+saucedemo_url = os.getenv('SAUCE_DEMO_URL')
 
 @pytest.fixture
 def setup():
@@ -15,7 +20,7 @@ def setup():
   driver.maximize_window()
 
   # go to url
-  driver.get("https://www.saucedemo.com/")
+  driver.get(saucedemo_url)
 
   # yield driver
   yield driver
