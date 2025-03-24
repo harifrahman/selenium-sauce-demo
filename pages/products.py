@@ -13,9 +13,20 @@ class Products:
   def get_products(self):
     return self.driver.find_elements(By.XPATH, Locater.xpath_product_list)
   
+  def get_add_to_cart_btn(self, product):
+    return product.find_element(By.CSS_SELECTOR, Locater.xpath_first_btn_add_to_cart)
+  
+  def get_product_by_id(self, id):
+    return self.driver.find_elements(By.XPATH, Locater.xpath_product_list)
+  
   def get_count_product(self):
     return len(self.get_products())
   
+  def get_cart_icon(self):
+    return self.driver.find_element(By.XPATH, Locater.xpath_cart_icon)
+
   def check_cart_icon(self):
-    cart_icon = self.driver.find_element(By.XPATH, Locater.xpath_cart_icon)
-    assert cart_icon.is_displayed()
+    assert self.get_cart_icon().is_displayed()
+
+  def click_cart_icon(self):
+    self.get_cart_icon().click()

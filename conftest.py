@@ -12,7 +12,7 @@ def setup():
   # init setup part
   chrome_option = ChromeOptions()
   chrome_option.add_experimental_option('detach', True)
-  # chrome_option.add_argument("--headless=new")
+  chrome_option.add_argument("--headless=new")
 
   # init chrome driver
   driver = webdriver.Chrome(options= chrome_option)
