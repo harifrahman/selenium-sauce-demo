@@ -1,4 +1,3 @@
-import pytest
 from data.data_provider import DataProvider
 from pages.login import Login
 from pages.products import Products
@@ -56,7 +55,7 @@ def test_complete_payment_with_one_item(setup):
 
   # assert success navigate to checkout page
   current_url = setup.current_url
-  assert current_url == saucedemo_cart_url
+  assert current_url == saucedemo_checkout_url
   checkout_page.check_current_tag_line()
 
   checkout_page.fill_first_name("John")
@@ -66,7 +65,7 @@ def test_complete_payment_with_one_item(setup):
 
   # assert success navigate to checkout-overview page
   current_url = setup.current_url
-  assert current_url == saucedemo_cart_url
+  assert current_url == saucedemo_checkout_overview_url
   checkout_overview.check_current_tag_line()
   checkout_overview.is_total_amount_calculation_correct()
   checkout_overview.click_finish_btn()
