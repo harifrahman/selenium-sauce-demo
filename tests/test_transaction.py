@@ -6,6 +6,7 @@ from pages.checkout import Checkout
 from pages.checkout_overview import CheckoutOverview
 from dotenv import load_dotenv
 import os
+from time import sleep
 
 login_data = DataProvider.login_data
 load_dotenv()
@@ -61,6 +62,7 @@ def test_complete_payment_with_one_item(setup):
   checkout_page.fill_first_name("John")
   checkout_page.fill_last_name("Foe")
   checkout_page.fill_zip_code("123456")
+  sleep(3)
   checkout_page.click_continue_btn()
 
   # assert success navigate to checkout-overview page
@@ -69,4 +71,6 @@ def test_complete_payment_with_one_item(setup):
   checkout_overview.check_current_tag_line()
   checkout_overview.is_total_amount_calculation_correct()
   checkout_overview.click_finish_btn()
+  sleep(3)
+
   

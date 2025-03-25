@@ -32,7 +32,7 @@ class CheckoutOverview:
   def get_total(self):
     return self.driver.find_element(By.XPATH, Locater.xpath_total).text
   
-  def extract_float(value_str):
+  def extract_float(self, value_str):
     return float(re.findall(r"[-+]?\d*\.\d+|\d+", value_str)[0])
 
   def is_subtotal_correct(self):
@@ -47,7 +47,7 @@ class CheckoutOverview:
 
   def is_total_correct(self):
     subtotal = self.extract_float(self.get_subtotal())
-    tax = self.extract_float(self.get_tax())
+    tax = self.extract_float(self.get_tax_label())
     total = self.extract_float(self.get_total())
 
     expected_total = subtotal + tax
