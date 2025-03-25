@@ -1,4 +1,6 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from locators.checkout import Locater
 
 class Checkout:
@@ -11,14 +13,24 @@ class Checkout:
     assert checkout_tagline == "Checkout: Your Information"
 
   def fill_first_name(self, first_name):
-    self.driver.find_element(By.ID, Locater.input_first_name).send_keys(first_name)
+      first_name_field = WebDriverWait(self.driver, 10).until(
+          EC.element_to_be_clickable((By.ID, Locater.input_first_name))
+      )
+      first_name_field.clear()
+      first_name_field.send_keys(first_name)
 
   def fill_last_name(self, last_name):
-    self.driver.find_element(By.ID, Locater.input_last_name).send_keys(last_name)
-  
-  def fill_zip_code(self, zip_code):
-    self.driver.find_element(By.ID, Locater.input_zip_code).send_keys(zip_code)
+      last_name_field = WebDriverWait(self.driver, 10).until(
+          EC.element_to_be_clickable((By.ID, Locater.input_last_name))
+      )
+      last_name_field.send_keys(last_name)
 
+  def fill_zip_code(self, zip_code):
+      zip_code_field = WebDriverWait(self.driver, 10).until(
+          EC.element_to_be_clickable((By.ID, Locater.input_zip_code))
+      )
+      zip_code_field.send_keys(zip_code)
+      
   def get_continue_btn(self):
     return self.driver.find_element(By.XPATH, Locater.xpath_continue_btn)
 
