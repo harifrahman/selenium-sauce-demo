@@ -1,4 +1,5 @@
-from data.data_provider import DataProvider
+import pytest
+from data.data_item import DataProvider
 from pages.login import Login
 from pages.products import Products
 from pages.cart import Cart
@@ -10,6 +11,7 @@ import os
 from time import sleep
 
 load_dotenv()
+data_item = DataProvider.data_item
 
 saucedemo_url = os.getenv('SAUCE_DEMO_URL')
 saucedemo_products_url = os.getenv('SAUCE_DEMO_PRODUCTS_URL')
@@ -63,6 +65,57 @@ def test_complete_payment_with_one_item(setup):
   checkout_overview_page.check_current_tag_line()
   checkout_overview_page.is_total_amount_calculation_correct()
   sleep(3)
+  checkout_overview_page.click_finish_btn()
+
+  # Verify navigation to checkout complete page
+  assert setup.current_url == saucedemo_checkout_complete_url
+  checkout_complete_page.verify_success_message()
+
+@pytest.mark.parametrize('item_name_id', data_item)
+def test_complete_payment_with_parameterize_test(item_name_id, setup):
+  login_page = Login(setup)
+  product_page = Products(setup)
+  cart_page = Cart(setup)
+  checkout_page = Checkout(setup)
+  checkout_overview_page = CheckoutOverview(setup)
+  checkout_complete_page = CheckoutComplete(setup)
+  
+  # Login to the web app
+  login_page.fill_username(valid_username)
+  login_page.fill_pasword(valid_password)
+  login_page.click_login_button()
+
+  # Verify navigation to products page
+  assert setup.current_url == saucedemo_products_url
+  product_page.check_current_tag_line()
+  product_page.check_cart_icon()
+  assert product_page.get_count_product() > 0
+
+  # Add specific product ID to cart
+  product_cart = product_page.get_add_to_cart_for_specific_product_id(item_name_id)
+  product_cart.click()
+  product_page.click_cart_icon()
+
+  # Verify navigation to cart page
+  assert setup.current_url == saucedemo_cart_url
+  cart_page.check_current_tag_line()
+  sleep(2)
+  cart_page.click_cart_icon()
+
+  # Verify navigation to checkout page
+  assert setup.current_url == saucedemo_checkout_url
+  checkout_page.check_current_tag_line()
+  checkout_page.fill_first_name("John")
+  checkout_page.fill_last_name("Foe")
+  checkout_page.fill_zip_code("123456")
+  sleep(2)
+  checkout_page.click_continue_btn()
+
+  # Verify navigation to checkout overview page
+  assert setup.current_url == saucedemo_checkout_overview_url
+  checkout_overview_page.check_current_tag_line()
+  checkout_overview_page.is_total_amount_calculation_correct()
+  sleep(2)
   checkout_overview_page.click_finish_btn()
 
   # Verify navigation to checkout complete page

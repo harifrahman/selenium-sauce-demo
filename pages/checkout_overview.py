@@ -50,7 +50,9 @@ class CheckoutOverview:
     tax = self.extract_float(self.get_tax_label())
     total = self.extract_float(self.get_total())
 
-    expected_total = subtotal + tax
+    # rounding to takes only 2 decimal point
+    expected_total = round(subtotal + tax, 2)
+    total = round(total, 2)
 
     # Assertion for total
     assert expected_total == total, f"Expected total {expected_total}, but got {total}"
