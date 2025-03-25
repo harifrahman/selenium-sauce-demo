@@ -11,7 +11,7 @@ class Products:
     assert product_tagline == "Products"
 
   def get_products(self):
-    return self.driver.find_elements(By.XPATH, Locater.xpath_product_list)
+    return self.driver.find_elements(By.CLASS_NAME, Locater.class_btn_list_of_add_to_cart_item)
   
   def get_add_to_cart_btn(self, product):
     return product.find_element(By.CSS_SELECTOR, Locater.xpath_first_btn_add_to_cart)
