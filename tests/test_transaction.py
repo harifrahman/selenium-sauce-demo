@@ -4,6 +4,7 @@ from pages.products import Products
 from pages.cart import Cart
 from pages.checkout import Checkout
 from pages.checkout_overview import CheckoutOverview
+from pages.checkout_complete import CheckoutComplete
 from dotenv import load_dotenv
 import os
 from time import sleep
@@ -16,6 +17,7 @@ saucedemo_products_url = os.getenv('SAUCE_DEMO_PRODUCTS_URL')
 saucedemo_cart_url = os.getenv('SAUCE_DEMO_CART_URL')
 saucedemo_checkout_url = os.getenv('SAUCE_DEMO_CHECKOUT_URL')
 saucedemo_checkout_overview_url = os.getenv('SAUCE_DEMO_CHECKOUT_OVERVIEW_URL')
+saucedemo_checkout_complete_url = os.getenv('SAUCE_DEMO_CHECKOUT_COMPLETE_URL')
 valid_username = os.getenv('VALID_USERNAME')
 valid_password = os.getenv('VALID_PASSWORD')
 
@@ -24,7 +26,8 @@ def test_complete_payment_with_one_item(setup):
   product_page = Products(setup)
   cart_page = Cart(setup)
   checkout_page = Checkout(setup)
-  checkout_overview = CheckoutOverview(setup)
+  checkout_overview_page = CheckoutOverview(setup)
+  checkout_complete_page = CheckoutComplete(setup)
   
   # login web-app
   login_page.fill_username(valid_username)
@@ -68,9 +71,16 @@ def test_complete_payment_with_one_item(setup):
   # assert success navigate to checkout-overview page
   current_url = setup.current_url
   assert current_url == saucedemo_checkout_overview_url
-  checkout_overview.check_current_tag_line()
-  checkout_overview.is_total_amount_calculation_correct()
-  checkout_overview.click_finish_btn()
+  checkout_overview_page.check_current_tag_line()
+  checkout_overview_page.is_total_amount_calculation_correct()
   sleep(3)
+  checkout_overview_page.click_finish_btn()
 
+  # assert success navigate to checkout-complete page
+  current_url = setup.current_url
+  assert current_url == saucedemo_checkout_complete_url
+  checkout_complete_page.verify_success_message()
+
+
+  
   
