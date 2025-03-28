@@ -31,11 +31,15 @@ pipeline {
             }
         }
         stage('Run Tests') {
-            steps {
-                sh '''
-                    . ${PYTHON_ENV}/bin/activate
-                    pytest tests --alluredir=allure-results/unit || true
-                '''
+            timeout(time: 30, unit: 'MINUTES') {  // Set a timeout for the stage
+                steps {
+                    retry(2) {  // Retry the test stage up to 2 times
+                        sh '''
+                            . ${PYTHON_ENV}/bin/activate
+                            pytest tests --alluredir=allure-results/unit || true
+                        '''
+                    }
+                }
             }
         }
     }
