@@ -1,3 +1,8 @@
 pipeline-stage-view:latest
 blueocean:latest
 allure-jenkins-plugin:latest
+docker-workflow:latest
+git:latest
+credentials:latest
+ansicolor:latest
+htmlpublisher:latest

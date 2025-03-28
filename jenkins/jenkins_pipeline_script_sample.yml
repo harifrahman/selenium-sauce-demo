@@ -1,0 +1,59 @@
+pipeline {
+    agent any
+    environment {
+        PYTHON_ENV = 'venv'
+    }
+    parameters {
+        string(name: 'BRANCH', defaultValue: 'master', description: 'Git branch to build')  // Add parameter for branch selection
+    }
+    stages {
+        stage('Pulling from GitHub') {
+            steps {
+                git branch: "${params.BRANCH}", url: 'https://github.com/harifrahman/selenium-sauce-demo.git'  // Use the branch parameter
+            }
+        }
+        stage('Setup Python Environment') {
+            steps {
+                sh '''
+                    if [ ! -d "${PYTHON_ENV}" ]; then       // Checks if the venv directory exists.
+                        python3 -m venv ${PYTHON_ENV}       // create new if doesnt exists
+                    fi
+                    . ${PYTHON_ENV}/bin/activate            // activate venv
+                '''
+            }
+        }
+        stage('Install Dependencies') {
+            steps {
+                sh '''
+                    . ${PYTHON_ENV}/bin/activate
+                    pip install -r requirements.txt --cache-dir=.pip-cache      // install and Caches the downloaded dependencies locally to speed up future installations.
+                '''
+            }
+        }
+        stage('Run Tests') {
+            steps {
+                sh '''
+                    . ${PYTHON_ENV}/bin/activate
+                    pytest tests --alluredir=allure-results/unit || true
+                '''
+            }
+        }
+    }
+    post {                                      // post block typically contains actions that are executed after the pipeline stage
+        always {
+            sh '''
+                . ${PYTHON_ENV}/bin/activate
+                export PATH=$PATH:/usr/local/bin
+                allure generate allure-results -o allure-report --clean || true
+            '''
+            publishHTML(target: [
+                allowMissing: true,
+                alwaysLinkToLastBuild: false,
+                keepAll: true,
+                reportDir: 'allure-report',
+                reportFiles: 'index.html',
+                reportName: 'Allure Report'
+            ])
+        }
+    }
+}
