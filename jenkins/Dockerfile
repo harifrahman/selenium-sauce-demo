@@ -1,3 +1,3 @@
-FROM jenkins/jenkins:lts
+FROM jenkins/jenkins:latest-jdk17
 USER root
-RUN apt-get update && apt-get install -y sudo
+RUN apt-get update && apt-get install -y lsb-release sudo
