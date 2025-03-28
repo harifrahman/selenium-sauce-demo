@@ -13,20 +13,20 @@ pipeline {
             }
         }
         stage('Setup Python Environment') {
-            steps {
+            steps {                                         // Checks if the venv directory exists. | create new if doesnt exists | activate venv
                 sh '''
-                    if [ ! -d "${PYTHON_ENV}" ]; then       // Checks if the venv directory exists.
-                        python3 -m venv ${PYTHON_ENV}       // create new if doesnt exists
+                    if [ ! -d "${PYTHON_ENV}" ]; then       
+                        python3 -m venv ${PYTHON_ENV}       
                     fi
-                    . ${PYTHON_ENV}/bin/activate            // activate venv
+                    . ${PYTHON_ENV}/bin/activate            
                 '''
             }
         }
         stage('Install Dependencies') {
-            steps {
+            steps {                                                         // install and Caches the downloaded dependencies locally to speed up future installations.
                 sh '''
                     . ${PYTHON_ENV}/bin/activate
-                    pip install -r requirements.txt --cache-dir=.pip-cache      // install and Caches the downloaded dependencies locally to speed up future installations.
+                    pip install -r requirements.txt --cache-dir=.pip-cache      
                 '''
             }
         }
