@@ -3,7 +3,7 @@ services:
     build: ./jenkins
     image: jenkins-jdk-17
     container_name: jenkins
-    platform: linux/arm64  # Use ARM-compatible image for Apple M1
+    platform: linux/amd64  # Use ARM-compatible image for Apple M1
     restart: always
     ports:
       - "8080:8080"
@@ -20,7 +20,7 @@ services:
   selenium-hub:
     image: selenium/hub:latest
     container_name: selenium-hub
-    platform: linux/arm64
+    platform: linux/amd64
     ports:
       - "4444:4444"
     healthcheck:
@@ -33,7 +33,7 @@ services:
 
   chrome-node:
     image: selenium/node-chrome:latest
-    platform: linux/arm64
+    platform: linux/amd64
     depends_on:
       - selenium-hub
     environment:
