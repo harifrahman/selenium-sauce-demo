@@ -1,6 +1,7 @@
 services:
   jenkins:
-    build: ./jenkins
+    build: 
+      context: ./jenkins
     image: jenkins-jdk-17
     container_name: jenkins
     platform: linux/amd64  # Use ARM-compatible image for Apple M1
