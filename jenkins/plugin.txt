@@ -1,0 +1,3 @@
+pipeline-stage-view:latest
+blueocean:latest
+allure-jenkins-plugin:latest
