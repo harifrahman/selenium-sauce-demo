@@ -20,6 +20,9 @@ RUN apt-get install -y curl unzip && \
     rm allure.zip && \
     ln -sf /usr/local/bin/allure/allure-2.33.0/bin/allure /usr/local/bin/allure
 
+# Add /usr/local/bin to PATH
+ENV PATH="/usr/local/bin:$PATH"
+
 # Copy plugins.txt and install plugins
 COPY plugin.txt /usr/share/jenkins/ref/plugins.txt
 RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/ref/plugins.txt
