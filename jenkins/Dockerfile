@@ -13,11 +13,12 @@ RUN apt-get update && apt-get install -y \
     python3.11-venv \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Install required packages and Allure
 RUN apt-get install -y curl unzip && \
     curl -sLo allure.zip https://github.com/allure-framework/allure2/releases/download/2.33.0/allure-2.33.0.zip && \
     unzip -q allure.zip -d /usr/local/bin/allure && \
     rm allure.zip && \
-    ln -s /usr/local/bin/allure/allure /usr/local/bin/allure
+    ln -sf /usr/local/bin/allure/allure-2.33.0/bin/allure /usr/local/bin/allure
 
 # Copy plugins.txt and install plugins
 COPY plugin.txt /usr/share/jenkins/ref/plugins.txt
