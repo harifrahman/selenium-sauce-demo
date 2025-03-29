@@ -11,13 +11,8 @@ pipeline {
             steps {
                 sh '''
                     if ! which allure > /dev/null 2>&1; then
-                        echo "Allure not found. Installing Allure..."
-                        mkdir -p /usr/local/bin/allure
-                        curl -sLo allure.zip https://github.com/allure-framework/allure2/releases/download/2.33.0/allure-2.33.0.zip
-                        unzip -q allure.zip -d /usr/local/bin/allure
-                        rm allure.zip
-                        ln -s /usr/local/bin/allure/allure /usr/local/bin/allure
-                        echo "Allure installed successfully."
+                        echo "Allure not found!"
+                        echo "Checks & Preinstall Allure in the Docker image."
                     else
                         echo "Allure is already installed."
                     fi
@@ -48,8 +43,8 @@ pipeline {
             }
         }
         stage('Run Tests') {
-            timeout(time: 30, unit: 'MINUTES') {  // Set a timeout for the stage
-                steps {
+            steps {
+                timeout(time: 30, unit: 'MINUTES') {  // Set a timeout for the stage
                     retry(2) {  // Retry the test stage up to 2 times
                         sh '''
                             . ${PYTHON_ENV}/bin/activate
